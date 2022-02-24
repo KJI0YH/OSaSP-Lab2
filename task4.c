@@ -7,7 +7,8 @@
 int printline(FILE* fp) {
 	int c = getc(fp);
 	while (c!=EOF && c!='\n') {
-		putc(c,stdout);
+		if (putc(c,stdout)==EOF) 
+			printf("Error write a character\n");
 		c = getc(fp);
 	}
 	if (c!=EOF)
@@ -17,6 +18,7 @@ int printline(FILE* fp) {
 
 //getting number from a string parameter
 int ConvStrInt(char* str) {
+
 	int Num = 0;
 	for (int i = 0; str[i]!='\0'; i++) 
 		Num = Num*10 + (str[i] - '0');
@@ -24,8 +26,13 @@ int ConvStrInt(char* str) {
 }
 
 int main(int argc, char *argv[]){
-	int fd = open(argv[1], O_RDONLY);
+
+	if (argc != 3) {
+		printf("Invalid number of parameters\n");
+		return 0;
+	}
 	
+	int fd = open(argv[1], O_RDONLY);
 	int N = ConvStrInt(argv[2]);
 	
 	if (fd<0) 

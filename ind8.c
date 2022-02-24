@@ -4,6 +4,7 @@
 #include <dirent.h>
 #include <string.h>
 #include <sys/vfs.h>
+#include <stdlib.h>
 
 //getting full name of the file
 char* getFullName(char *Buffer, char *Folder, char *Dir) {

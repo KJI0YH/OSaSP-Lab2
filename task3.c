@@ -5,6 +5,11 @@
 
 int main(int argc, char *argv[]){
 
+	if (argc != 2) {
+		printf("Invalid number of parameters\n");
+		return 0;
+	}
+
 	//ctrl+F key
 	const int StopSymbol = 6;
 
@@ -18,7 +23,7 @@ int main(int argc, char *argv[]){
 		
 		int c;
 		while ((c = getchar()) != StopSymbol) {
-			getchar();
+
 			
 			//writing a character
 			if (putc(c, fp)==EOF) 
