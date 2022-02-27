@@ -2,11 +2,12 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <errno.h>
 
 int main(int argc, char *argv[]){
 
 	if (argc != 2) {
-		printf("Invalid number of parameters\n");
+		fprintf(stderr,"Invalid number of parameters\n");
 		return 0;
 	}
 
@@ -14,27 +15,29 @@ int main(int argc, char *argv[]){
 	const int StopSymbol = 6;
 
 	//open a file
-	int fd = open(argv[1], O_WRONLY | O_CREAT, 0644);
-	if (fd<0) 
-		printf("Could not open the file\n");
-	else {
-		printf("File open successfully\n");
-		FILE *fp = fdopen(fd, "w");
-		
-		int c;
-		while ((c = getchar()) != StopSymbol) {
-
+	int fd;
+	if (fd = open(argv[1], O_WRONLY | O_CREAT, 0644)) {
+		FILE* fp;
+		if (fp = fdopen(fd, "w")) {
+			int c;
+			while ((c = getchar()) != StopSymbol) {
+	
 			
-			//writing a character
-			if (putc(c, fp)==EOF) 
-				printf("Error writing a character");
-		}
+				//writing a character
+				if (putc(c, fp)==EOF) 
+					fprintf(stderr,"Error writing a character");
+			}
+	
+		}	
+		else
+			perror("fdopen() ");
 		
 		//closing a file
-		if (fclose(fp)!=0) 
-			printf("Could not close the file\n");
-		else
-			printf("File closed successfully\n");
+		if (fclose(fp)) 
+			perror("fclose() ");
 	}	
+	else
+		perror("open() ");
+		
 	return 0;
 }

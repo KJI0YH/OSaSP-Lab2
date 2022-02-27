@@ -5,6 +5,7 @@
 #include <string.h>
 #include <sys/vfs.h>
 #include <stdlib.h>
+#include <errno.h>
 
 //getting full name of the file
 char* getFullName(char *Buffer, char *Folder, char *Dir) {
@@ -27,9 +28,8 @@ long long DirSize(char* DirName, long DiskCap) {
 		
 	//try to open directory
 	if ((dirp=opendir(DirName))==NULL) 
-		printf("Cannot open a '%s' dir\n", DirName);
+		perror("opendir(DirName) ");
 	else {
-		printf("Dir '%s' opened successfully\n", DirName);
 		for (de = readdir(dirp); de!=NULL; de = readdir(dirp)) {
 		
 			//getting full path name of the file
@@ -44,10 +44,8 @@ long long DirSize(char* DirName, long DiskCap) {
 				Size+=buf.st_size;
 		}	
 		printf("'%s'\t%lld bytes\t Disk usage %f%%\n", DirName, Size, (float)Size/DiskCap*100);
-		if (closedir(dirp)==-1) 
-			printf("Cannot close the '%s' dir\n", DirName);
-		else
-			printf("Dir '%s' closed successfully\n", DirName);
+		if (closedir(dirp)==-1)
+			perror("closedir(dirp)" );
 	}
 	return Size;
 }
@@ -56,13 +54,13 @@ long long DirSize(char* DirName, long DiskCap) {
 void main(int argc, char* argv[]) {
 
 	if (argc !=2) {
-		printf("Invalid number of parameters\n");
+		fprintf(stderr,"Invalid number of parameters\n");
 		return;
 	}
 
 	struct statfs buf;
 	if (statfs("/",&buf)==-1) 
-		printf("Cannot get the disk capacity value\n");
+		perror("statfs() ");
 	else {		
 	
 		//calculate the disk capacity size

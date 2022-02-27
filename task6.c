@@ -3,33 +3,33 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <dirent.h>
+#include <errno.h>
 
 //reading all files from dir
 void readAllDir(char* dir) {
 	DIR *dirp;
+	
+	//open a directoty
 	if ((dirp = opendir(dir))==NULL) {
-		printf("Could not open the dir '%s'\n",dir);
+		perror("opendir(dir) ");
 		return;
-	} else {
-		printf("\nDir '%s' opened successfully\n", dir);
-		
-		struct dirent *rddir;
-		while ((rddir = readdir(dirp))!=NULL) {
-			printf("%s\n", rddir->d_name);
-		}
-		
-		if (closedir(dirp)==0)
-			printf("Dir '%s' closed successfully\n", dir);
-		else
-			printf("Could not closed the dir '%s'\n", dir);
 	}
+		
+	struct dirent *rddir;
+	while ((rddir = readdir(dirp))!=NULL) {
+		printf("%s\n", rddir->d_name);
+	}
+	
+	//close a directoty
+	if (closedir(dirp)==-1)
+		perror("closedir(dirp) ");
 	return;
 }
 
-int main(int argc, char *argv[]){
+int main(void){
 	
-	char dir[256];
-	getcwd(dir, 256);
+	char dir[1024];
+	getcwd(dir, 1024);
 	readAllDir(dir);
 	
 	readAllDir("/");
