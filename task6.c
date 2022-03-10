@@ -28,10 +28,19 @@ void readAllDir(char* dir) {
 
 int main(void){
 	
+	//getting current dir
 	char dir[1024];
-	getcwd(dir, 1024);
+	if (getcwd(dir, 1024)==0) {
+		perror("getcwd() :\n");
+		return 0;
+	}
+	
+	//reading current dir
+	puts("\nCurrent dir:\n");
 	readAllDir(dir);
 	
+	//reading root dir
+	puts("\nRoot dir:\n");
 	readAllDir("/");
 	return 0;	
 }

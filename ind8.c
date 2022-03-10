@@ -55,6 +55,7 @@ void main(int argc, char* argv[]) {
 
 	if (argc !=2) {
 		fprintf(stderr,"Invalid number of parameters\n");
+		fprintf(stderr, "ind8: directoryName\n");
 		return;
 	}
 

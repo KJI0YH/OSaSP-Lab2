@@ -3,23 +3,30 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <string.h>
 
 int main(int argc, char *argv[]){
 
 	if (argc !=3) {
-		fprintf(stderr,"Invalid number of parameters\nfuncname dest src\n");
+		fprintf(stderr,"Invalid number of parameters\n");
+		fprintf(stderr,"task5: destFilename srcFileName\n");
+		return 0;
+	}
+	
+	if (strcmp(argv[1], argv[2])==0) {
+		fprintf(stderr,"Files cannot have the same name\n");
 		return 0;
 	}
 
 	//openning a files
 	int fdsrc;
-	if ((fdsrc = open(argv[2], O_RDONLY))==0) {
+	if ((fdsrc = open(argv[2], O_RDONLY))==-1) {
 		perror("open(src) :");
 		return 0;
 	}
 		
 	int fddest;
-	if ((fddest = open(argv[1], O_WRONLY | O_CREAT))==0) {
+	if ((fddest = open(argv[1], O_WRONLY | O_CREAT))==-1) {
 		perror("open(dest) ");	
 		return 0;
 	}

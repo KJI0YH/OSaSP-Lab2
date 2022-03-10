@@ -8,6 +8,7 @@ int main(int argc, char *argv[]){
 
 	if (argc != 2) {
 		fprintf(stderr,"Invalid number of parameters\n");
+		fprintf(stderr,"task3: filename\n");
 		return 0;
 	}
 
@@ -21,8 +22,7 @@ int main(int argc, char *argv[]){
 		if (fp = fdopen(fd, "w")) {
 			int c;
 			while ((c = getchar()) != StopSymbol) {
-	
-			
+		
 				//writing a character
 				if (putc(c, fp)==EOF) 
 					fprintf(stderr,"Error writing a character");

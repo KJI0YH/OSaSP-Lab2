@@ -4,7 +4,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <stdlib.h>
-#include <errono.h>
+#include <errno.h>
 
 //reading row by chars
 int printline(FILE* fp) {
@@ -23,6 +23,7 @@ int main(int argc, char *argv[]){
 
 	if (argc != 3) {
 		fprintf(stderr,"Invalid number of parameters\n");
+		fprintf(stderr,"task4: filename N\n");
 		return 0;
 	}
 	
@@ -33,7 +34,7 @@ int main(int argc, char *argv[]){
 
 	
 	int fd;	
-	if (fd = open(argv[1], O_RDONLY)) { 
+	if ((fd = open(argv[1], O_RDONLY))!=-1) { 
 		
 		FILE *fp;
 		if (fp = fdopen(fd,"r")) {
