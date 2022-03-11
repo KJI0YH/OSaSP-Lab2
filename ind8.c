@@ -36,12 +36,18 @@ long long DirSize(char* DirName, long DiskCap) {
 			getFullName(FullPath,DirName,de->d_name);
 			
 			//check directory file
-			if (de->d_type == DT_DIR && strcmp(de->d_name,".")!=0 && strcmp(de->d_name,"..")!=0) 
+			if (strcmp(de->d_name,".")!=0 && strcmp(de->d_name,"..")!=0 && de->d_type == DT_DIR) 
 				Size+=DirSize(FullPath,DiskCap);
 				
 			//check simple file
-			else if (stat(FullPath, &buf)==0 && strcmp(de->d_name,".")!=0 && strcmp(de->d_name,"..")!=0) 
-				Size+=buf.st_size;
+			else if (strcmp(de->d_name,".")!=0 && strcmp(de->d_name,"..")!=0) {
+				if (stat(FullPath, &buf)==0) {
+					Size+=buf.st_size;
+				}
+				else {
+					perror("stat()");
+				}
+			}
 		}	
 		printf("'%s'\t%lld bytes\t Disk usage %f%%\n", DirName, Size, (float)Size/DiskCap*100);
 		if (closedir(dirp)==-1)
